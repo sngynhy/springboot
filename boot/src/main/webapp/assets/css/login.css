@@ -1,0 +1,15 @@
+@charset "UTF-8";
+.loginContextBox {
+    margin: 0 auto;
+   	width: 176px;
+}
+
+.joinContextBox {
+	margin: 0 auto;
+	width: 320px;
+}
+
+.resultText {
+    color: red;
+    font-size: small;
+}

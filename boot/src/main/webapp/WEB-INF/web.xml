@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+<!-- 1. org.springframework.web.servlet.DispatcherServlet
+			: 스프링 프레임워크에서 제공하는 DispatcherServlit을 사용하겠다는 것을 명시 -->
+	<servlet>
+		<description></description>
+		<display-name>DispatcherServlit</display-name>
+		<servlet-name>DispatcherServlit</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DispatcherServlit</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/error/error.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/error404.jsp</location>
+	</error-page>
+		
+	<!-- 3. org.springframework.web.filter.CharacterEncodingFilter : 스프링에서 제공하는 filter 클래스 사용 명시 -->
+	<filter>
+		<display-name>EncFilter</display-name>
+		<filter-name>EncFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>EncFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<!-- path를 설정하여 리스너가 무엇을 보고 실행해야하는지 알려줌 -> 컨테이너가 DS.xml보다 먼저 읽고 설정됨 -->
+	<context-param>
+	  	<param-name>contextConfigLocation</param-name>
+	  	<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+	<!-- .do 요청 -> DS 생성 -> Controller
+		"ServiceImpl(비즈니스 컴포넌트)" 생성해야함!
+		ContextLoaderListener - 서버가 시작되는 동시에 스프링 컨테이너에 로드할 수 있도록 설정 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+</web-app>

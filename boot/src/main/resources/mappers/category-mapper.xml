@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.category.CategoryDAO">
+
+	<insert id="insertCategory">
+		INSERT INTO CATEGORY (CATE_ID, CATEGORY) VALUES (#{cate_id}, #{category})
+	</insert>
+	
+	<delete id="deleteCategory">
+		DELETE FROM CATEGORY WHERE CATE_ID = #{cate_id}
+	</delete>
+	
+	<select id="getCategoryList" resultType="CategoryVO">
+		SELECT * FROM CATEGORY
+	</select>
+	
+</mapper>

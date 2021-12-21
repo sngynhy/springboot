@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.reply.ReplyDAO">
+	
+	<insert id="insertReply">
+	<![CDATA[
+		INSERT INTO REPLY (R_ID, B_ID, ID, REPLY) VALUES (REPLY_SEQ.NEXTVAL, #{b_id}, #{id}, #{reply})
+	]]>
+	</insert>
+	
+	<update id="rCntPlus">
+	<![CDATA[
+		UPDATE USERBOARD SET R_CNT = R_CNT + 1 WHERE B_ID = #{b_id}
+	]]>
+	</update>
+	
+	<delete id="deleteReply">
+	<![CDATA[
+		DELETE FROM REPLY WHERE R_ID = #{r_id}
+	]]>
+	</delete>
+	
+	<update id="rCntMinus">
+	<![CDATA[
+		UPDATE USERBOARD SET R_CNT = R_CNT - 1 WHERE B_ID = #{b_id}
+	]]>
+	</update>
+	
+	<select id="getReplyList" resultType="ReplyVO">
+		SELECT R_ID, B_ID, ID, REPLY, TO_CHAR(R_DATE, 'YYYY-MM-DD HH24:MI') R_DATE FROM REPLY WHERE B_ID = #{b_id} ORDER BY R_DATE
+	</select>
+	
+</mapper>

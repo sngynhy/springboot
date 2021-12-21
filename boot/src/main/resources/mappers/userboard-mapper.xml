@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.userboard.UserBoardDAO">
+
+	<insert id="insertBoard">
+	<![CDATA[
+		INSERT INTO USERBOARD (B_ID, ID, TITLE, CONTENT, B_TYPE, A_ID, N_ID, CATE_ID) VALUES (USERBOARD_SEQ.NEXTVAL, #{id}, #{title}, #{content}, #{b_type}, #{a_id}, #{n_id}, #{cate_id})
+	]]>
+	</insert>
+	
+	<update id="updateBoard">
+	<![CDATA[
+		UPDATE USERBOARD SET TITLE = #{title}, CONTENT = #{content}, U_DATE = SYSDATE WHERE B_ID = #{b_id}
+	]]>
+	</update>
+	
+	<delete id="deleteBoard">
+	<![CDATA[
+		DELETE USERBOARD WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+	
+	<delete id="deleteReply">
+	<![CDATA[
+		DELETE FROM REPLY WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+	
+	<delete id="deleteLikes">
+	<![CDATA[
+		DELETE FROM LIKES WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+	
+	<select id="getBoard" resultType="UserBoardVO">
+	<![CDATA[
+		SELECT B_ID, ID, TITLE, CONTENT, R_CNT, LIKE_CNT, TO_CHAR(B_DATE, 'YYYY-MM-DD HH24:MI') B_DATE, B_TYPE, A_ID, N_ID, CATE_ID, (SELECT COUNT(*) FROM LIKES WHERE B_ID = #{b_id} AND ID = #{id}) FAV FROM USERBOARD WHERE B_ID = #{b_id} ORDER BY B_DATE DESC
+	]]>
+	</select>
+	
+	<select id="getBoardList" resultType="UserBoardVO">
+		SELECT A.B_ID, A.ID, A.TITLE, A.CONTENT, A.R_CNT, A.LIKE_CNT, TO_CHAR(A.B_DATE, 'YYYY-MM-DD HH24:MI') B_DATE, A.B_TYPE, A.A_ID, A.N_ID, A.CATE_ID
+		<if test="b_type == 'info'">
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND CATE_ID = #{cate_id} AND TITLE LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'content'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND CATE_ID = #{cate_id} AND CONTENT LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'id'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND CATE_ID = #{cate_id} AND ID LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+			</if>
+			<if test="keyword == null">
+				FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND CATE_ID = #{cate_id} AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+			</if>
+		</if>
+		<if test="b_type == 'ask'">
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND TITLE LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'content'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND CONTENT LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'id'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND ID LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+			</if>
+			<if test="keyword == null">
+				FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+			</if>
+		</if>
+		<if test="b_type == 'review'">
+			<!-- WHERE B_TYPE = #{b_type} AND N_ID = #{n_id} -->
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND N_ID = #{n_id} AND TITLE LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'content'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND N_ID = #{n_id} AND CONTENT LIKE '%'||#{keyword}||'%' AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+				</if>
+				<if test="condition == 'id'">
+					FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND N_ID = #{n_id} AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) AAND ID LIKE '%'||#{keyword}||'%'
+				</if>
+			</if>
+			<if test="keyword == null">
+				FROM (SELECT A.*, ROWNUM AS RNUM FROM (SELECT * FROM USERBOARD ORDER BY B_DATE DESC) A WHERE B_TYPE = #{b_type} AND N_ID = #{n_id}  AND ROWNUM <![CDATA[ <= ]]> #{cntPerPage}) A
+			</if>
+		</if>
+		WHERE RNUM <![CDATA[ > ]]> #{startIndex}
+	</select>
+		
+	<select id="getBoardListCount" resultType="int">
+		SELECT COUNT(*) FROM USERBOARD
+		<if test="b_type == 'info'">
+			WHERE B_TYPE = #{b_type} AND CATE_ID = #{cate_id}
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					AND TITLE LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'content'">
+					AND CONTENT LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'id'">
+					AND ID LIKE '%'||#{keyword}||'%'
+				</if>
+			</if>
+		</if>
+		<if test="b_type == 'ask'">
+			WHERE B_TYPE = #{b_type}
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					AND TITLE LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'content'">
+					AND CONTENT LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'id'">
+					AND ID LIKE '%'||#{keyword}||'%'
+				</if>
+			</if>
+		</if>
+		<if test="b_type == 'review'">
+			WHERE B_TYPE = #{b_type} AND N_ID = #{n_id}
+			<if test="keyword != null">
+				<if test="condition == 'title'">
+					AND TITLE LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'content'">
+					AND CONTENT LIKE '%'||#{keyword}||'%'
+				</if>
+				<if test="condition == 'id'">
+					AND ID LIKE '%'||#{keyword}||'%'
+				</if>
+			</if>
+		</if>
+	</select>
+</mapper>

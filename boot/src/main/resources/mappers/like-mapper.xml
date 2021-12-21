@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.like.LikeDAO">
+	
+	<insert id="insertLike">
+	<![CDATA[
+		INSERT INTO LIKES (b_id, id) VALUES (#{b_id}, #{id})
+	]]>
+	</insert>
+	
+	<update id="likeCntPlus">
+		<if test="b_id lte 500">
+		<![CDATA[
+			UPDATE ADMINBOARD SET LIKE_CNT = LIKE_CNT + 1 WHERE B_ID = #{b_id}
+		]]>
+		</if>
+		<if test="b_id gte 1000">
+		<![CDATA[
+			UPDATE USERBOARD SET LIKE_CNT = LIKE_CNT + 1 WHERE B_ID = #{b_id}
+		]]>
+		</if>
+	</update>
+	
+	<delete id="deleteLike">
+	<![CDATA[
+		DELETE FROM LIKES WHERE ID = #{id}
+	]]>
+	</delete>
+	
+	<update id="likeCntMinus">
+		<if test="b_id lte 500">
+			<![CDATA[
+				UPDATE ADMINBOARD SET LIKE_CNT = LIKE_CNT - 1 WHERE B_ID = #{b_id}
+			]]>
+		</if>
+		<if test="b_id gte 1000">
+			<![CDATA[
+				UPDATE USERBOARD SET LIKE_CNT = LIKE_CNT - 1 WHERE B_ID = #{b_id}
+			]]>
+		</if>
+	</update>
+	
+</mapper>

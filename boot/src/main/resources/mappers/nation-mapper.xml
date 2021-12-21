@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.nation.NationDAO">
+	
+	<insert id="insertNation">
+		INSERT INTO NATION (N_ID, NATION, A_ID, LAT, LNG) VALUES (NATION_SEQ.NEXTVAL, #{nation}, #{a_id}, #{lat}, #{lng})
+	</insert>
+	
+	<delete id="deleteNation">
+		DELETE FROM NATION WHERE N_ID = #{n_id}
+	</delete>
+		
+	<select id="getNationList" resultType="NationVO">
+		SELECT * FROM NATION
+	</select>
+
+</mapper>

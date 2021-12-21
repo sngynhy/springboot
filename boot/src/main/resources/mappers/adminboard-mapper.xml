@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.adminboard.AdminBoardDAO">
+
+	<insert id="insertBoard">
+	<![CDATA[
+		INSERT INTO ADMINBOARD (B_ID, TITLE, CONTENT, ID, IMG_PATH) VALUES (ADMINBOARD_SEQ.NEXTVAL, #{title}, #{content}, #{id}, #{img_path})
+	]]>
+	</insert>
+	
+	<update id="updateBoard">
+	<![CDATA[
+		UPDATE ADMINBOARD SET TITLE = #{title}, CONTENT = #{content}, U_DATE = SYSDATE, IMG_PATH = #{img_path} WHERE B_ID = #{b_id}
+	]]>
+	</update>
+	
+	<delete id="deleteBoard">
+	<![CDATA[
+		DELETE ADMINBOARD WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+
+	<delete id="deleteReply">
+	<![CDATA[
+		DELETE FROM REPLY WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+	
+	<delete id="deleteLikes">
+	<![CDATA[
+		DELETE FROM LIKES WHERE B_ID = #{b_id}
+	]]>
+	</delete>
+		
+	<select id="getBoard" resultType="AdminBoardVO">
+	<![CDATA[
+		SELECT B_ID, ID, TITLE, CONTENT, LIKE_CNT, IMG_PATH, (SELECT COUNT(*) FROM LIKES WHERE B_ID = #{b_id} AND ID = #{id}) FAV FROM ADMINBOARD WHERE B_ID = #{b_id} ORDER BY B_DATE DESC
+	]]>
+	</select>
+	
+	<select id="getBoardList" resultType="AdminBoardVO">
+	<![CDATA[
+		SELECT * FROM ADMINBOARD ORDER BY LIKE_CNT DESC
+	]]>
+	</select>
+	
+</mapper>

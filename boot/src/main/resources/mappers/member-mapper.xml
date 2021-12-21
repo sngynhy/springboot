@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seong.app.model.member.MemberDAO">
+	
+	<insert id="insertMember">
+	<![CDATA[
+		INSERT INTO MEMBER VALUES (#{id}, #{pw}, #{email}, #{phone})
+	]]>
+	</insert>
+	
+	<update id="updateMember">
+		<choose>
+			<when test="pw == null">
+				UPDATE MEMBER SET EMAIL = #{email}, PHONE = #{phone} WHERE ID = #{id}
+			</when>
+			<otherwise>
+				UPDATE MEMBER SET PW = #{pw} WHERE ID = #{id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember">
+	<![CDATA[
+		DELETE FROM MEMBER WHERE ID = #{id}
+	]]>
+	</delete>
+	
+	<!-- 해당 회원 게시글 수정 -->
+	<delete id="updateBoard">
+	<![CDATA[
+		UPDATE USERBOARD SET ID = '(탈퇴 회원)' WHERE ID = #{id}
+	]]>
+	</delete>
+	<!-- 해당 회원의 모든 댓글 id값을  (탈퇴 회원) 으로 처리-->
+	<delete id="updateReply">
+	<![CDATA[
+		UPDATE REPLY SET ID = '(탈퇴 회원)' WHERE ID = #{id}
+	]]>
+	</delete>
+	<!-- 해당 회원의 찜 목록 삭제 -->
+	<delete id="deleteLikes">
+	<![CDATA[
+		DELETE FROM LIKES WHERE ID = #{id}
+	]]>
+	</delete>
+	
+	<select id="getMember" resultType="MemberVO">
+		SELECT * FROM MEMBER
+		<choose>
+			<when test="pw == null">
+			WHERE ID = #{id}
+			</when>
+			<otherwise>
+				WHERE ID = #{id} AND PW = #{pw}
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="checkID" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE ID = #{value}
+	</select>
+	
+</mapper>
