@@ -100,7 +100,7 @@
 											<c:if test="${data.id == sessionID}">
 												<ul class="actions" style="float: right;">
 													<li><input type="button" value="수정" class="button small" onclick="location.href='/updateboardView.do?b_id=${data.b_id}'"/></li>
-													<li><input type="button" value="삭제" class="button small" onclick="deleteBoard('${data.b_id}', '${data.b_type}', '${data.cate_id}', '${data.a_id}', '${data.n_id}')" /></li>
+													<li><input type="button" value="삭제" class="button small" onclick="deleteConfirm('${data.b_id}', '${data.b_type}', '${data.cate_id}', '${data.a_id}', '${data.n_id}')" /></li>
 												</ul>
 											</c:if>
 										</div>
@@ -184,11 +184,12 @@
 
 	</body>
 	<script type="text/javascript">
-		function deleteBoard(b_id, b_type, cate_id, a_id, n_id) {
+		function deleteConfirm(b_id, b_type, cate_id, a_id, n_id) {
 			if (confirm("삭제하시겠습니까?")) {
 				window.location.href="/deleteBoard.do?b_id="+b_id+"&b_type="+b_type+"&cate_id="+cate_id+"&a_id="+a_id+"&n_id="+n_id;
 			}
 		}
+		
 		function deleteReply(r_id, b_id, b_type, cate_id, a_id, n_id) {
 			window.location.href="/deleteReply.do?r_id="+r_id+"&b_id="+b_id+"&b_type="+b_type+"&cate_id="+cate_id+"&a_id="+a_id+"&n_id="+n_id;
 		}

@@ -78,19 +78,28 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping("/updateAdminBoardView.do")
-	public String getUpdateView() {
-		return "/jsp-adminboard/insert";
+	public String getUpdateView(AdminBoardVO vo, HttpSession session, Model model) {
+		vo.setId((String) session.getAttribute("sessionID"));
+		model.addAttribute("data", adminboardServiceImpl.getBoard(vo));
+		return "/jsp-adminboard/updateAdmin";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/updateAdminBoard.do")
-	public String updateAdminBoard(Model model) {
-		return "";
+	public String updateAdminBoard(AdminBoardVO vo, Model model) {
+		adminboardServiceImpl.updateBoard(vo);
+		return "redirect:/getAdminBoard.do?b_id=" + vo.getB_id();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/deleteAdminBoard.do")
-	public String deleteAdminBoard() {
-		return "true";
+	public String deleteAdminBoard(AdminBoardVO vo) {
+		int res = adminboardServiceImpl.deleteBoard(vo);
+		System.out.println("res : " + res);
+		if (res > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
 	}
 }

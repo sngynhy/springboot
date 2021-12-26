@@ -38,29 +38,22 @@
 									<div class="recommand-header">
 										<h2 class="recommand-title"><a href="javascript:window.history.go(-1)">Recommend</a></h2>
 									</div>
-									<%-- <div class="recommand-header">
-										<h1>${data.title}</h1>										
-										<div class="recommand-btn-area">
-											<a href="/insertRecoomandView.do" class="button primary samll">수정</a>
-											<button class="button samll" onclick="deleteRecommandConfirm()">삭제</button>
-										</div>
-									</div> --%>
 									
 									<div class="common-header">
 										<h1 class="common-title">${data.title}</h1>
 										<div class="common-btn-area">
 											<c:choose>
-												<c:when test="${!empty sessionID && data.id != 'admin' && data.fav == 0}"> <!-- 빈 하트 -->
+												<c:when test="${!empty sessionID && sessionID != 'admin' && data.fav == 0}"> <!-- 빈 하트 -->
 													<img alt="하트이미지" src="/images/heart_1.png" id="fav" onclick="like('${data.b_id}', '${sessionID}')" style="width: 18px; cursor: pointer;" />
 												</c:when>
 												<c:when test="${!empty sessionID && data.fav > 0}"> <!-- 찬 하트 -->
 													<img alt="하트이미지" src="/images/heart_2.png" id="fav" onclick="like('${data.b_id}', '${sessionID}')" style="width: 18px; cursor: pointer;" />
 												</c:when>
 											</c:choose>
-											<c:if test="${data.id == 'admin'}">
+											<c:if test="${sessionID == 'admin'}">
 												<ul class="actions" style="float: right;">
-													<li><input type="button" value="수정" class="button small" onclick="location.href='/updateRecoomandView.do?b_id=${data.b_id}'"/></li>
-													<li><input type="button" value="삭제" class="button small" onclick="deleteRecommandConfirm()" /></li>
+													<li><input type="button" value="수정" class="button small" onclick="location.href='/updateAdminBoardView.do?b_id=${data.b_id}'"/></li>
+													<li><input type="button" value="삭제" class="button small" onclick="deleteConfirm('${data.b_id}')" /></li>
 												</ul>
 											</c:if>
 										</div>
@@ -94,25 +87,24 @@
 
 	</body>
 	<script type="text/javascript">
-		function deleteRecommandConfirm () {
+		function deleteConfirm(b_id) {
 			var res = confirm('정말로 삭제 하시겠습니까?');
 			if (res) {
-				deleteRecommand();
+				deleteAdminBoard(b_id);
 			}
 		}
 		
-		function deleteRecommand() {
+		function deleteAdminBoard(b_id) {
 			$.ajax({ 
 				type: "POST",
-				url: "/deleteRecommand.do",
+				url: "/deleteAdminBoard.do",
 				data: {
-					b_id : $("#b_id").val()
+					b_id : b_id
 				},
 				success: function(data) { 
-					if(data === 'true') {
+					if(data == 'true') {
 						alert('성공적으로 삭제 되었습니다.');
-						window.location.href = '/recommandList.do';
-						
+						window.location.href = '/getAdminBoardList.do';
 						//setTimeout(() => { //상단에 실행 되어야 할 부분이 실행되지 않고 페이지 이동을 하게될 경우 settimeout으로 나중에 이동되도록 처리 
 //							window.location.href = 'recommandList.do'; 
 						//})

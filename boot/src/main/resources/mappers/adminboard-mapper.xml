@@ -19,12 +19,6 @@
 		DELETE ADMINBOARD WHERE B_ID = #{b_id}
 	]]>
 	</delete>
-
-	<delete id="deleteReply">
-	<![CDATA[
-		DELETE FROM REPLY WHERE B_ID = #{b_id}
-	]]>
-	</delete>
 	
 	<delete id="deleteLikes">
 	<![CDATA[
@@ -34,7 +28,7 @@
 		
 	<select id="getBoard" resultType="AdminBoardVO">
 	<![CDATA[
-		SELECT B_ID, ID, TITLE, CONTENT, LIKE_CNT, IMG_PATH, (SELECT COUNT(*) FROM LIKES WHERE B_ID = #{b_id} AND ID = #{id}) FAV FROM ADMINBOARD WHERE B_ID = #{b_id} ORDER BY B_DATE DESC
+		SELECT B_ID, ID, TITLE, CONTENT, LIKE_CNT, IMG_PATH, (SELECT COUNT(*) FROM LIKES WHERE B_ID = #{b_id} AND ID = #{id}) FAV FROM ADMINBOARD WHERE B_ID = #{b_id}
 	]]>
 	</select>
 	

@@ -1,6 +1,5 @@
 package com.seong.app.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -125,7 +124,7 @@ public class UserBoardController {
 	
 	
 	@RequestMapping("/deleteBoard.do")
-	public String deleteBoard(UserBoardVO vo, Model model) throws IOException {
+	public String deleteBoard(UserBoardVO vo, Model model) {
 		userboardServiceImpl.deleteBoard(vo);
 		return "redirect:/getBoardList.do?b_type=" + vo.getB_type() + "&cate_id=" + vo.getCate_id() + "&a_id=" + vo.getA_id() + "&n_id=" + vo.getN_id();
 	}

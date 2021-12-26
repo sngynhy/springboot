@@ -24,9 +24,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	@Transactional
 	public int deleteBoard(AdminBoardVO vo) {
 		int res = 0;
-		res = boardDAO.deleteBoard(vo);
-		res = boardDAO.deleteReply(vo);
-		res = boardDAO.deleteLikes(vo);
+		res += boardDAO.deleteBoard(vo);
+		res += boardDAO.deleteLikes(vo);
 		return res;
 	}
 	@Override
