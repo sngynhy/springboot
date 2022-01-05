@@ -28,7 +28,7 @@ public class MemberController {
 		if (memberServiceImpl.getMember(vo) != null) {
 			session.setAttribute("sessionID", vo.getId());
 			return true;
-		} else {
+		} else { // 로그인 실패
 			return false;
 		}
 	}

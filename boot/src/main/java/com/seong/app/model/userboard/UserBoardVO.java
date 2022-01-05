@@ -5,22 +5,22 @@ import org.apache.ibatis.type.Alias;
 @Alias("UserBoardVO")
 public class UserBoardVO {
 	
-	private int b_id; // 1001���� �ڵ� +1
-	private String id; // ȸ�� id
-	private String title; // �Խñ� ����
-	private String content; // �Խñ� ����
-	private int r_cnt; // ��� ��
-	private int like_cnt; // �� ��
-	private String b_date; // �ۼ� ��¥
-	private String u_date; // ���� ��¥
-	private String b_type; // �Խ��� �з� - ����[info] or ����[ask] or �ı�[review]
-	private String a_id; // ���� - ����, �ƽþ�, �̱� ..
-	private String n_id; // ���� - ������, ����, ...
-	private String cate_id; // ī�װ� - �Խ��ǿ� ���� �޶���
-	private String condition; // �˻� �ɼ�
-	private String keyword; // �˻� Ű����
-	private int fav; // �� ��� - �� ���� ��� 0, ���� ��� 1
-	private int startIndex; // �Խñ� ���� index
+	private int b_id; // 1001부터 자동 +1
+	private String id; // 회원 id
+	private String title; // 게시글 제목
+	private String content; // 게시글 내용
+	private int r_cnt; // 댓글 수
+	private int like_cnt; // 찜 수
+	private String b_date; // 작성 날짜
+	private String u_date; // 수정 날짜
+	private String b_type; // 게시판 분류 - 정보[info] or 질문[ask] or 후기[review]
+	private String a_id; // 지역 - 유럽, 아시아, 미국 ..
+	private String n_id; // 나라 - 프랑스, 영국, ...
+	private String cate_id; // 카테고리 - 게시판에 따라 달라짐
+	private String condition; // 검색 옵션
+	private String keyword; // 검색 키워드
+	private int fav; // 찜 기록 - 찜 안한 경우 0, 찜한 경우 1
+	private int startIndex; // 게시글 시작 index
 	private int cntPerPage; // 
 	
 	public int getB_id() {

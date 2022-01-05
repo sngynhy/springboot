@@ -2,36 +2,36 @@ package com.seong.app.model.userboard;
 
 public class PaginationVO {
 	
-    private int pageSize = 10; // �� �������� �Խñ� ��
-    private int rangeSize = 5; /** �� ��(range)�� ������ �� **/
-    private int curPage = 1;  /** ���� ������ **/
-    private int curRange = 1; /** ���� ��(range) **/
-    private int listCnt; /** �� �Խñ� �� **/
-    private int pageCnt;  /** �� ������ �� **/
-    private int rangeCnt; /** �� ��(range) �� **/
-    private int startPage = 1; /** ���� ������ **/
-    private int endPage = 1; /** �� ������ **/
-    private int startIndex = 0; /** ���� index **/
-    private int prevPage; /** ���� ������ **/
-    private int nextPage; /** ���� ������ **/
+    private int pageSize = 10; // 한 페이지당 게시글 수
+    private int rangeSize = 5; /** 한 블럭(range)당 페이지 수 **/
+    private int curPage = 1;  /** 현재 페이지 **/
+    private int curRange = 1; /** 현재 블럭(range) **/
+    private int listCnt; /** 총 게시글 수 **/
+    private int pageCnt;  /** 총 페이지 수 **/
+    private int rangeCnt; /** 총 블럭(range) 수 **/
+    private int startPage = 1; /** 시작 페이지 **/
+    private int endPage = 1; /** 끝 페이지 **/
+    private int startIndex = 0; /** 시작 index **/
+    private int prevPage; /** 이전 페이지 **/
+    private int nextPage; /** 다음 페이지 **/
     
     public PaginationVO(int listCnt, int curPage) {
         
         /**
-         * ����¡ ó�� ����
-         * 1. �� ��������
-         * 2. �� ��(range)��
+         * 페이징 처리 순서
+         * 1. 총 페이지수
+         * 2. 총 블럭(range)수
          * 3. range setting
          */
         
-        // �� �Խù� ���� ���� �������� Controller�� ���� �޾ƿ´�.
-        setCurPage(curPage); /** ���������� **/
-        setListCnt(listCnt); /** �� �Խù� �� **/
-        setPageCnt(listCnt); /** 1. �� ������ �� **/
-        setRangeCnt(pageCnt); /** 2. �� ��(range)�� **/
-        rangeSetting(curPage); /** 3. ��(range) setting **/
+        // 총 게시물 수와 현재 페이지를 Controller로 부터 받아온다.
+        setCurPage(curPage); /** 현재페이지 **/
+        setListCnt(listCnt); /** 총 게시물 수 **/
+        setPageCnt(listCnt); /** 1. 총 페이지 수 **/
+        setRangeCnt(pageCnt); /** 2. 총 블럭(range)수 **/
+        rangeSetting(curPage); /** 3. 블럭(range) setting **/
         
-        setStartIndex(curPage); /** DB ���Ǹ� ���� startIndex ���� **/
+        setStartIndex(curPage); /** DB 질의를 위한 startIndex 설정 **/
     }
     
     public void rangeSetting(int curPage){

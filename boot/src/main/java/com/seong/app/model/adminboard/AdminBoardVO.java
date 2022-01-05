@@ -14,8 +14,8 @@ public class AdminBoardVO {
 	private String u_date;
 	private String id;
 	private MultipartFile fileUpload;
-	private String img_path; // ����� �̹��� ���
-	private int fav; // �� ��� - �� ���� ��� 0, ���� ��� 1
+	private String img_path; // 썸네일 이미지 경로
+	private int fav; // 찜 기록 - 찜 안한 경우 0, 찜한 경우 1
 	
 	public int getB_id() {
 		return b_id;

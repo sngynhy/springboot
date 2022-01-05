@@ -68,7 +68,7 @@
 								<form method="post" action="/updateBoard.do">
 									<input type="hidden" name="id" value="${sessionID}">
 									<input type="hidden" name="b_id" value="${data.b_id}">
-									<h2><span style="float: left; width: 10%">제목 : </span><input type="text" name="title" id="title" value="${data.title}" required="required" style="width: 90%;"></h2>
+									<h2><span style="float: left; width: 10%">제목 : </span><input type="text" name="title" id="title" value="${data.title}" style="width: 90%;"></h2>
 									<textarea name="content" id="editor">${data.content}</textarea>
 									<input type="submit" value="등록" class="button mt10" style="float: right;">
 								</form>

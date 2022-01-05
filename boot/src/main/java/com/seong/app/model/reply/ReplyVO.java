@@ -5,12 +5,12 @@ import org.apache.ibatis.type.Alias;
 @Alias("ReplyVO")
 public class ReplyVO {
 	
-	private int r_id; // ��� id
-	private int b_id; // �Խñ� id
-	private String id; // ȸ�� id
-	private String reply; // ��� ����
-	private String r_date; // �ۼ� ��¥
-	private String u_date; // ���� ��¥
+	private int r_id; // 댓글 id
+	private int b_id; // 게시글 id
+	private String id; // 회원 id
+	private String reply; // 댓글 내용
+	private String r_date; // 작성 날짜
+	private String u_date; // 수정 날짜
 	
 	public int getR_id() {
 		return r_id;

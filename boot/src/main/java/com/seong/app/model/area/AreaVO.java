@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("AreaVO")
 public class AreaVO {
 	private String a_id; // pk
-	private String area; // ���� - EU ��
+	private String area; // 지역 - EU 등
 	
 	public String getA_id() {
 		return a_id;

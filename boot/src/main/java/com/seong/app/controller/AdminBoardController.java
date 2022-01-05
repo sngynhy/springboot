@@ -50,28 +50,30 @@ public class AdminBoardController {
 		
 		String imgPath = null;
 		String savePath = request.getSession().getServletContext().getRealPath("/images/preview/"); // ���� ����Ǵ� ���
-		String loadPath = "/images/preview/"; // ���� ���� ��� - �������� ���Ͽ� �����ϴ� ���, ���� ���丮
+		String loadPath = "/images/preview/"; // 서버 상의 경로 - 서버에서 파일에 접근하는 경로, 저장 디렉토리
 		
-		System.out.println(" savePath : " + savePath);
+//		System.out.println(" savePath : " + savePath);
 		
-		MultipartFile fileUpload = vo.getFileUpload(); // ���� ��������
+		MultipartFile fileUpload = vo.getFileUpload(); // 파일 가져오기
 		
 		if (!fileUpload.isEmpty()) {
-			String originFileNme = fileUpload.getOriginalFilename(); // ���� ���ϸ�
-			System.out.println(" originFileName : " + originFileNme);
+			String originFileNme = fileUpload.getOriginalFilename(); // 실제 파일명
+//			System.out.println(" originFileName : " + originFileNme);
 			
-			String ext = StringUtils.getFilenameExtension(originFileNme); // ���� ������ Ȯ���ڸ�
-			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext; // ���� �ߺ� ����
+			String ext = StringUtils.getFilenameExtension(originFileNme); // 실제 파일의 확장자명
+			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext; // 파일 중복 방지
 			
-			imgPath = loadPath + newInfImgFileName; // ���� ���� ���
+			imgPath = loadPath + newInfImgFileName; // 파일 접근 경로
 			vo.setImg_path(imgPath);
 			
-			System.out.println(" save path : " + savePath + newInfImgFileName);
-			System.out.println(" img path : " + imgPath);
+//			System.out.println(" save path : " + savePath + newInfImgFileName);
+//			System.out.println(" img path : " + imgPath);
 			
-			File file = new File(savePath + newInfImgFileName); // ���� ����Ǵ� ���� ��� ����
+			File file = new File(savePath + newInfImgFileName); // 실제 저장되는 파일 경로 지정
 			
 			fileUpload.transferTo(file);
+			
+			System.out.println(vo);
 			adminboardServiceImpl.insertBoard(vo);
 		}
 		return "redirect:/getAdminBoardList.do";
@@ -84,10 +86,31 @@ public class AdminBoardController {
 		return "/jsp-adminboard/updateAdmin";
 	}
 	
-	@ResponseBody
 	@RequestMapping("/updateAdminBoard.do")
-	public String updateAdminBoard(AdminBoardVO vo, Model model) {
-		adminboardServiceImpl.updateBoard(vo);
+	public String updateAdminBoard(AdminBoardVO vo, HttpSession session, HttpServletRequest request) throws IllegalStateException, IOException {		
+		vo.setId((String) session.getAttribute("sessionID"));
+		
+		String imgPath = null;
+		String savePath = request.getSession().getServletContext().getRealPath("/images/preview/"); // ���� ����Ǵ� ���
+		String loadPath = "/images/preview/";
+		
+		MultipartFile fileUpload = vo.getFileUpload();
+		
+		if (!fileUpload.isEmpty()) {
+			String originFileNme = fileUpload.getOriginalFilename();
+			
+			String ext = StringUtils.getFilenameExtension(originFileNme);
+			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext;
+			
+			imgPath = loadPath + newInfImgFileName;
+			vo.setImg_path(imgPath);
+			
+			File file = new File(savePath + newInfImgFileName);
+			
+			fileUpload.transferTo(file);
+			adminboardServiceImpl.updateBoard(vo);
+		}
+		
 		return "redirect:/getAdminBoard.do?b_id=" + vo.getB_id();
 	}
 	

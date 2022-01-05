@@ -35,15 +35,15 @@ public class UserBoardController {
 	@Autowired
 	private UserBoardService userboardServiceImpl;
 	@Autowired
-	private CategoryService categoryServiceImpl; // ����, ����, ���� ��
+	private CategoryService categoryServiceImpl; // 교통, 숙소, 맛집 등
 	@Autowired
-	private NationService nationServiceImpl; // �ĸ�, ����, ��Ż���� ��
+	private NationService nationServiceImpl; // 파리, 영국, 이탈리아 등
 	@Autowired
-	private AreaService areaServiceImpl; // ����, �ƽþ� ��
+	private AreaService areaServiceImpl; // 유럽, 아시아 등
 	@Autowired
-	private ReplyService replyServiceImpl; // ���
+	private ReplyService replyServiceImpl; // 댓글
 	@Autowired
-	private LikeService likeServiceImpl; // ��
+	private LikeService likeServiceImpl; // 찜
 	
 	@ModelAttribute("sidebarData")
 	public Model getSideBarData(Model model) {
@@ -64,21 +64,21 @@ public class UserBoardController {
 	@RequestMapping("/getBoardList.do")
 	public String getBoardList(UserBoardVO vo, @RequestParam(defaultValue="1") int curPage, Model model) throws Exception {
 		
-		int listCnt = userboardServiceImpl.getBoardListCount(vo); // ��ü �Խñ� ��
-//		System.out.println("��ü �Խñ� �� : " + listCnt);
+		int listCnt = userboardServiceImpl.getBoardListCount(vo); // 전체 게시글 수
+//		System.out.println("전체 게시글 수 : " + listCnt);
 		PaginationVO pagination = new PaginationVO(listCnt, curPage);
-		vo.setStartIndex(pagination.getStartIndex()); // �Խñ� ���� index
+		vo.setStartIndex(pagination.getStartIndex()); // 게시글 시작 index
 		vo.setCntPerPage(vo.getStartIndex() + pagination.getPageSize());
 		
 //		System.out.println("start index : "+ vo.getStartIndex());
 //		System.out.println("cntPerPage : " + vo.getCntPerPage());
 		
-		List<UserBoardVO> datas = userboardServiceImpl.getBoardList(vo); // ���� ������ �Խñ� ��� ��ȸ - 10���� 
+		List<UserBoardVO> datas = userboardServiceImpl.getBoardList(vo); // 현재 페이지 게시글 목록 조회 - 10개씩 
 		
-		model.addAttribute("datas", datas); // ���� ���� - setAttribute�� ����
-		model.addAttribute("b_type", vo.getB_type()); // �Խ��� ���� - ���� ī�װ� ID
-		model.addAttribute("cate_id", vo.getCate_id()); // ���� ī�װ� ID
-		model.addAttribute("n_id", vo.getN_id()); // ���� ID
+		model.addAttribute("datas", datas); // 정보 저장 - setAttribute의 역할
+		model.addAttribute("b_type", vo.getB_type()); // 게시판 종류 - 상위 카테고리 ID
+		model.addAttribute("cate_id", vo.getCate_id()); // 하위 카테고리 ID
+		model.addAttribute("n_id", vo.getN_id()); // 국가 ID
 		model.addAttribute("pagination", pagination);
 		return "/jsp-userboard/getBoardList";
 	}
@@ -117,14 +117,14 @@ public class UserBoardController {
 	}
 	
 	@RequestMapping("/updateBoard.do")
-	public String updateBoard(UserBoardVO vo, Model model) {
+	public String updateBoard(UserBoardVO vo) {
 		userboardServiceImpl.updateBoard(vo);
 		return "redirect:/getBoard.do?b_id=" + vo.getB_id();
 	}
 	
 	
 	@RequestMapping("/deleteBoard.do")
-	public String deleteBoard(UserBoardVO vo, Model model) {
+	public String deleteBoard(UserBoardVO vo) {
 		userboardServiceImpl.deleteBoard(vo);
 		return "redirect:/getBoardList.do?b_type=" + vo.getB_type() + "&cate_id=" + vo.getCate_id() + "&a_id=" + vo.getA_id() + "&n_id=" + vo.getN_id();
 	}

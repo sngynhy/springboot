@@ -5,8 +5,8 @@ import org.apache.ibatis.type.Alias;
 @Alias("LikeVO")
 public class LikeVO {
 	
-	private int b_id; // �Խñ�  ID
-	private String id; // ȸ�� id
+	private int b_id; // 게시글  ID
+	private String id; // 회원 id
 	
 	public int getB_id() {
 		return b_id;
