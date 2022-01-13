@@ -42,7 +42,7 @@ public class FileManageController {
 				String originFileNme = mf.getOriginalFilename(); // 실제 파일명
 				System.out.println(" originFileNme : " + originFileNme);
 				
-				String ext = StringUtils.getFilenameExtension(originFileNme); // ���� ������ Ȯ���ڸ�
+				String ext = StringUtils.getFilenameExtension(originFileNme); // 실제 파일의 확장자명
 				String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext; // 파일명 중복 방지
 				
 				imgPath = loadPath + newInfImgFileName; // 파일 접근 경로

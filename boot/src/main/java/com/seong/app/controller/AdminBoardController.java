@@ -47,35 +47,8 @@ public class AdminBoardController {
 	@RequestMapping("/insertAdminBoard.do")
 	public String insertAdminBoard(HttpSession session, HttpServletRequest request, AdminBoardVO vo) throws IllegalStateException, IOException {
 		vo.setId((String) session.getAttribute("sessionID"));
-		
-		String imgPath = null;
-		String savePath = request.getSession().getServletContext().getRealPath("/images/preview/"); // ���� ����Ǵ� ���
-		String loadPath = "/images/preview/"; // 서버 상의 경로 - 서버에서 파일에 접근하는 경로, 저장 디렉토리
-		
-//		System.out.println(" savePath : " + savePath);
-		
-		MultipartFile fileUpload = vo.getFileUpload(); // 파일 가져오기
-		
-		if (!fileUpload.isEmpty()) {
-			String originFileNme = fileUpload.getOriginalFilename(); // 실제 파일명
-//			System.out.println(" originFileName : " + originFileNme);
-			
-			String ext = StringUtils.getFilenameExtension(originFileNme); // 실제 파일의 확장자명
-			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext; // 파일 중복 방지
-			
-			imgPath = loadPath + newInfImgFileName; // 파일 접근 경로
-			vo.setImg_path(imgPath);
-			
-//			System.out.println(" save path : " + savePath + newInfImgFileName);
-//			System.out.println(" img path : " + imgPath);
-			
-			File file = new File(savePath + newInfImgFileName); // 실제 저장되는 파일 경로 지정
-			
-			fileUpload.transferTo(file);
-			
-			System.out.println(vo);
-			adminboardServiceImpl.insertBoard(vo);
-		}
+		fileUpload(request, vo);
+		adminboardServiceImpl.insertBoard(vo);
 		return "redirect:/getAdminBoardList.do";
 	}
 	
@@ -89,28 +62,8 @@ public class AdminBoardController {
 	@RequestMapping("/updateAdminBoard.do")
 	public String updateAdminBoard(AdminBoardVO vo, HttpSession session, HttpServletRequest request) throws IllegalStateException, IOException {		
 		vo.setId((String) session.getAttribute("sessionID"));
-		
-		String imgPath = null;
-		String savePath = request.getSession().getServletContext().getRealPath("/images/preview/"); // ���� ����Ǵ� ���
-		String loadPath = "/images/preview/";
-		
-		MultipartFile fileUpload = vo.getFileUpload();
-		
-		if (!fileUpload.isEmpty()) {
-			String originFileNme = fileUpload.getOriginalFilename();
-			
-			String ext = StringUtils.getFilenameExtension(originFileNme);
-			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext;
-			
-			imgPath = loadPath + newInfImgFileName;
-			vo.setImg_path(imgPath);
-			
-			File file = new File(savePath + newInfImgFileName);
-			
-			fileUpload.transferTo(file);
-			adminboardServiceImpl.updateBoard(vo);
-		}
-		
+		fileUpload(request, vo);
+		adminboardServiceImpl.updateBoard(vo);
 		return "redirect:/getAdminBoard.do?b_id=" + vo.getB_id();
 	}
 	
@@ -118,11 +71,33 @@ public class AdminBoardController {
 	@RequestMapping("/deleteAdminBoard.do")
 	public String deleteAdminBoard(AdminBoardVO vo) {
 		int res = adminboardServiceImpl.deleteBoard(vo);
-		System.out.println("res : " + res);
+//		System.out.println("res : " + res);
 		if (res > 0) {
 			return "true";
 		} else {
 			return "false";
+		}
+	}
+	
+	// 썸네일 이미지 저장 함수
+	public static void fileUpload(HttpServletRequest request, AdminBoardVO vo) throws IllegalStateException, IOException {
+		String imgPath = null;
+		String savePath = request.getSession().getServletContext().getRealPath("/images/preview/"); // 실제 저장되는 경로
+		String loadPath = "/images/preview/"; // 서버 상의 경로 - 서버에서 파일에 접근하는 경로, 저장 디렉토리
+		
+		MultipartFile fileUpload = vo.getFileUpload(); // 파일 가져오기
+		
+		if (!fileUpload.isEmpty()) {
+			String originFileNme = fileUpload.getOriginalFilename(); // 실제 파일명
+			String ext = StringUtils.getFilenameExtension(originFileNme); // 실제 파일의 확장자명
+			String newInfImgFileName = "img_" + UUID.randomUUID() + "." + ext; // 파일 중복 방지
+			
+			imgPath = loadPath + newInfImgFileName; // 파일 접근 경로
+			vo.setImg_path(imgPath);
+			
+			File file = new File(savePath + newInfImgFileName); // 실제 저장되는 파일 경로 지정
+			
+			fileUpload.transferTo(file);
 		}
 	}
 }
